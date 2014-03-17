@@ -1,34 +1,34 @@
 package crypto_padding
 
 import (
-    "crypto/rand"
+    "bytes"
     "errors"
     "fmt"
 )
 
-type ISO101226 struct {}
+type ZeroPadding struct {}
 
-func (padding ISO101226) Pad(data []byte, blockSize int) (output []byte, err error) {
+func (padding ZeroPadding) Pad(data []byte, blockSize int) (output []byte, err error) {
     if blockSize < 1 || blockSize >= 256 {
         return output, errors.New(fmt.Sprintf("blocksize is out of bounds: %v", blockSize))
     }
     var paddingBytes = padSize(len(data), blockSize)
-    paddingSlice := make([]byte, paddingBytes - 1)
-    _, err = rand.Read(paddingSlice)
-    if err != nil {
-        return output, err
-    }
-    paddingSlice = append(paddingSlice, byte(paddingBytes))
+    paddingSlice := bytes.Repeat([]byte{byte(0)}, paddingBytes)
     output = append(data, paddingSlice...)
+    fmt.Println(paddingSlice)
     return output, nil
 }
 
-func (padding ISO101226) Unpad(data []byte, blockSize int) (output []byte, err error) {
+// May not behave properly if the last character of the unpadded data is a zero.
+func (padding ZeroPadding) Unpad(data []byte, blockSize int) (output []byte, err error) {
     var dataLen = len(data)
     if dataLen % blockSize != 0 {
         return output, errors.New("data's length isn't a multiple of blockSize")
     }
-    var paddingBytes = int(data[dataLen - 1])
+    var paddingBytes = 0
+    for data[dataLen - 1 - paddingBytes] == 0 {
+        paddingBytes++
+    }
     if paddingBytes > blockSize || paddingBytes <= 0 {
         return output, errors.New(fmt.Sprintf("invalid padding found: %v", paddingBytes))
     }
