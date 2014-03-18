@@ -9,7 +9,7 @@ import (
 // ZeroPadding adds padding of zeros.
 type ZeroPadding struct{}
 
-// Adds paddings of all zeros.
+// Pad adds paddings of all zeros.
 //
 // Example for a blocksize of 8:
 //     -> [DD DD DD DD DD 00 00 00]
