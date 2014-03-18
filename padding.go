@@ -12,7 +12,8 @@
 //    func main() {
 //        var padding = crypto_padding.AnsiX923
 //        data, _ = ioutil.ReadFile("myfile")
-//        paddedData = padding.
+//        paddedData = padding.Pad(data, 8)
+//        unpaddedData = padding.Unpad(paddedData, 8)
 //    }
 package cryptoPadding
 
