@@ -15,7 +15,7 @@ type ZeroPadding struct{}
 //     -> [DD DD DD DD DD 00 00 00]
 func (padding ZeroPadding) Pad(data []byte, blockSize int) (output []byte, err error) {
 	if blockSize < 1 || blockSize >= 256 {
-		return output, errors.New(fmt.Sprintf("blocksize is out of bounds: %v", blockSize))
+		return output, fmt.Errorf("blocksize is out of bounds: %v", blockSize)
 	}
 	var paddingBytes = padSize(len(data), blockSize)
 	paddingSlice := bytes.Repeat([]byte{byte(0)}, paddingBytes)
@@ -37,7 +37,7 @@ func (padding ZeroPadding) Unpad(data []byte, blockSize int) (output []byte, err
 		paddingBytes++
 	}
 	if paddingBytes > blockSize || paddingBytes <= 0 {
-		return output, errors.New(fmt.Sprintf("invalid padding found: %v", paddingBytes))
+		return output, fmt.Errorf("invalid padding found: %v", paddingBytes)
 	}
 	output = data[0 : dataLen-paddingBytes]
 	return output, nil

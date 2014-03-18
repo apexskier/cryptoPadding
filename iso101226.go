@@ -15,7 +15,7 @@ type ISO10126 struct{}
 //     -> [DD DD DD DD DD 23 138 03]
 func (padding ISO10126) Pad(data []byte, blockSize int) (output []byte, err error) {
 	if blockSize < 1 || blockSize >= 256 {
-		return output, errors.New(fmt.Sprintf("blocksize is out of bounds: %v", blockSize))
+		return output, fmt.Errorf("blocksize is out of bounds: %v", blockSize)
 	}
 	var paddingBytes = padSize(len(data), blockSize)
 	paddingSlice := make([]byte, paddingBytes-1)
@@ -28,7 +28,6 @@ func (padding ISO10126) Pad(data []byte, blockSize int) (output []byte, err erro
 	return output, nil
 }
 
-
 // Unpad removes padding.
 func (padding ISO10126) Unpad(data []byte, blockSize int) (output []byte, err error) {
 	var dataLen = len(data)
@@ -37,7 +36,7 @@ func (padding ISO10126) Unpad(data []byte, blockSize int) (output []byte, err er
 	}
 	var paddingBytes = int(data[dataLen-1])
 	if paddingBytes > blockSize || paddingBytes <= 0 {
-		return output, errors.New(fmt.Sprintf("invalid padding found: %v", paddingBytes))
+		return output, fmt.Errorf("invalid padding found: %v", paddingBytes)
 	}
 	output = data[0 : dataLen-paddingBytes]
 	return output, nil

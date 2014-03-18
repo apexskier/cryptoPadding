@@ -1,14 +1,14 @@
 package cryptoPadding
 
-// Fufils the padding interface to allow no padding.
+// NoPadding fufils the padding interface to allow no padding.
 type NoPadding struct{}
 
-// No-op
+// Pad is a no-op
 func (padding NoPadding) Pad(data []byte, blockSize int) (output []byte, err error) {
 	return data, nil
 }
 
-// No-op
+// Unpad is a no-op
 func (padding NoPadding) Unpad(data []byte, blockSize int) (output []byte, err error) {
 	return data, nil
 }

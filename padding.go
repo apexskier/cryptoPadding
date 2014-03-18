@@ -1,4 +1,4 @@
-// Package crypto_padding implements several standard byte padding schemes for
+// Package cryptoPadding implements several standard byte padding schemes for
 // use in block ciphers, such as standard AES.
 //
 // Byte padding appends bytes to data to make its total length a multiple of

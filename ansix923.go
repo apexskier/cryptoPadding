@@ -16,7 +16,7 @@ type AnsiX923 struct{}
 //     -> [DD DD DD DD DD DD DD DD 00 00 00 00 00 00 00 08]
 func (padding AnsiX923) Pad(data []byte, blockSize int) (output []byte, err error) {
 	if blockSize < 1 || blockSize >= 256 {
-		return output, errors.New(fmt.Sprintf("blocksize is out of bounds: %v", blockSize))
+		return output, fmt.Errorf("blocksize is out of bounds: %v", blockSize)
 	}
 	var paddingBytes = padSize(len(data), blockSize)
 	paddingSlice := append(bytes.Repeat([]byte{byte(0)}, paddingBytes-1), byte(paddingBytes))
@@ -32,7 +32,7 @@ func (padding AnsiX923) Unpad(data []byte, blockSize int) (output []byte, err er
 	}
 	var paddingBytes = int(data[dataLen-1])
 	if paddingBytes > blockSize || paddingBytes <= 0 {
-		return output, errors.New(fmt.Sprintf("invalid padding found: %v", paddingBytes))
+		return output, fmt.Errorf("invalid padding found: %v", paddingBytes)
 	}
 	var pad = data[dataLen-paddingBytes : dataLen-2]
 	for _, v := range pad {
