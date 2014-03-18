@@ -3,17 +3,30 @@
 //
 // Byte padding appends bytes to data to make its total length a multiple of
 // some block size.
-package crypto_padding
+//
+// Example usage
+//    import (
+//        "github.com/apexskier/crypto_padding"
+//        "io/ioutil"
+//    )
+//    func main() {
+//        var padding = crypto_padding.AnsiX923
+//        data, _ = ioutil.ReadFile("myfile")
+//        paddedData = padding.
+//    }
+package cryptoPadding
 
 // BlockPadding represents an arbitrary byte padding scheme.
 type BlockPadding interface {
-    Pad(data []byte, blockSize int) (output []byte, err error)
-    Unpad(data []byte, blockSize int) (output []byte, err error)
+	Pad(data []byte, blockSize int) (output []byte, err error)
+	Unpad(data []byte, blockSize int) (output []byte, err error)
 }
 
 // padSize return the number of bytes needed to properly pad a size of data.
 func padSize(dataSize, blockSize int) (ps int) {
-    ps = blockSize - (dataSize % blockSize)
-    if ps == 0 {ps = blockSize}
-    return
+	ps = blockSize - (dataSize % blockSize)
+	if ps == 0 {
+		ps = blockSize
+	}
+	return
 }
