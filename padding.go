@@ -6,7 +6,7 @@
 //
 // Example usage
 //    import (
-//        "github.com/apexskier/crypto_padding"
+//        "github.com/apexskier/cryptoPadding"
 //        "io/ioutil"
 //    )
 //    func main() {
