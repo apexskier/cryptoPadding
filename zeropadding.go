@@ -20,7 +20,6 @@ func (padding ZeroPadding) Pad(data []byte, blockSize int) (output []byte, err e
 	var paddingBytes = padSize(len(data), blockSize)
 	paddingSlice := bytes.Repeat([]byte{byte(0)}, paddingBytes)
 	output = append(data, paddingSlice...)
-	fmt.Println(paddingSlice)
 	return output, nil
 }
 

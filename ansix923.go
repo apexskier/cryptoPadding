@@ -34,12 +34,14 @@ func (padding AnsiX923) Unpad(data []byte, blockSize int) (output []byte, err er
 	if paddingBytes > blockSize || paddingBytes <= 0 {
 		return output, fmt.Errorf("invalid padding found: %v", paddingBytes)
 	}
-	var pad = data[dataLen-paddingBytes : dataLen-2]
-	for _, v := range pad {
-		if int(v) != 0 {
-			return output, errors.New("invalid padding found")
-		}
-	}
+    if (dataLen-paddingBytes < dataLen-2) {
+        var pad = data[dataLen-paddingBytes:dataLen-2]
+        for _, v := range pad {
+            if int(v) != 0 {
+                return output, errors.New("invalid padding found")
+            }
+        }
+    }
 	output = data[0 : dataLen-paddingBytes]
 	return output, nil
 }
