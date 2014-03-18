@@ -6,8 +6,14 @@ import (
     "fmt"
 )
 
+// AnsiX923 implements ANSI X.923 byte padding.
 type AnsiX923 struct {}
 
+// Pad adds padding of zeros, with the last byte being the padding size.
+//
+// Example for a blocksize of 8:
+//     -> [DD DD DD DD DD DD 00 02]
+//     -> [DD DD DD DD DD DD DD DD 00 00 00 00 00 00 00 08]
 func (padding AnsiX923) Pad(data []byte, blockSize int) (output []byte, err error) {
     if blockSize < 1 || blockSize >= 256 {
         return output, errors.New(fmt.Sprintf("blocksize is out of bounds: %v", blockSize))
@@ -18,6 +24,7 @@ func (padding AnsiX923) Pad(data []byte, blockSize int) (output []byte, err erro
     return output, nil
 }
 
+// Unpad removes padding.
 func (padding AnsiX923) Unpad(data []byte, blockSize int) (output []byte, err error) {
     var dataLen = len(data)
     if dataLen % blockSize != 0 {
